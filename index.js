@@ -15,7 +15,7 @@ let data = null
 app.get('/', async (req, res) => {
   if (!fetchedAt || fetchedAt + 10 < timestamp()) {
     console.log('fetch new')
-    // data = await service()
+    data = await service()
     fetchedAt = timestamp()
   }
   res.json({fetchedAt, fetchedAtDate, data})

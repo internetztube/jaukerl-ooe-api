@@ -2,7 +2,7 @@
 
 
 ## Frontend
-[https://github.com/internetztube/ooe-impft-dates-overview/settings](https://github.com/internetztube/ooe-impft-dates-overview/settings)
+[https://github.com/internetztube/ooe-impft-dates-overview/](https://github.com/internetztube/ooe-impft-dates-overview/)
 
 
 ## Installation

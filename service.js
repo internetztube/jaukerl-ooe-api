@@ -24,7 +24,10 @@ const main = async () => {
     const result = await appointmentsByAuthority(authority)
     appointments = [].concat(appointments, result)
   }
-  return appointments
+  return {
+    appointments,
+    authorities,
+  }
 }
 
 module.exports = main

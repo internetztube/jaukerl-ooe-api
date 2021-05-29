@@ -22,7 +22,7 @@ const main = async () => {
   for (let i = 0; i < authorities.length; i++) {
     const authority = authorities[i]
     const result = await appointmentsByAuthority(authority)
-    appointments = Object.assign(appointments, result)
+    appointments = [].concat(appointments, result)
   }
   return appointments
 }

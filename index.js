@@ -8,15 +8,17 @@ const port = process.env.PORT || 3000
 app.use(cors())
 
 let fetchedAt = null
+let fetchedAtDate = new Date()
 const timestamp = () => parseInt(new Date() / 1000)
 let data = null
 
 app.get('/', async (req, res) => {
-  if (!fetchedAt || fetchedAt + 60 < timestamp()) {
-    data = await service()
+  if (!fetchedAt || fetchedAt + 10 < timestamp()) {
+    console.log('fetch new')
+    // data = await service()
     fetchedAt = timestamp()
   }
-  res.json({fetchedAt, data})
+  res.json({fetchedAt, fetchedAtDate, data})
 })
 
 app.listen(port, () => {

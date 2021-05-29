@@ -12,7 +12,7 @@ const timestamp = () => parseInt(new Date() / 1000)
 let data = null
 
 app.get('/', async (req, res) => {
-  if (!fetchedAt || fetchedAt + 10 < timestamp()) {
+  if (!fetchedAt || fetchedAt + 60 < timestamp()) {
     console.log('fetch new')
     data = await service()
     fetchedAt = timestamp()

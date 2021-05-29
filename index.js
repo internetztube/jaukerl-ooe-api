@@ -7,7 +7,7 @@ let fetchedAt = null
 const timestamp = () => parseInt(new Date() / 1000)
 let data = null
 
-index.get('/data.json', async (req, res) => {
+index.get('/', async (req, res) => {
   if (!fetchedAt || fetchedAt + 60 < timestamp()) {
     data = await service()
     fetchedAt = timestamp()

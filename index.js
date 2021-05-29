@@ -1,13 +1,17 @@
 const express = require('express')
-const index = express()
-const port = process.env.PORT || 3000;
+const cors = require('cors')
 const service = require('./service')
+
+const app = express()
+const port = process.env.PORT || 3000
+
+app.use(cors())
 
 let fetchedAt = null
 const timestamp = () => parseInt(new Date() / 1000)
 let data = null
 
-index.get('/', async (req, res) => {
+app.get('/', async (req, res) => {
   if (!fetchedAt || fetchedAt + 60 < timestamp()) {
     data = await service()
     fetchedAt = timestamp()
@@ -15,6 +19,6 @@ index.get('/', async (req, res) => {
   res.json({fetchedAt, data})
 })
 
-index.listen(port, () => {
+app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })

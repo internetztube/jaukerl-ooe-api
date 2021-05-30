@@ -11,7 +11,7 @@ let fetchedAt = null
 const timestamp = () => parseInt(new Date() / 1000)
 let data = null
 let isFetching = false
-const cacheDuration = 10 // seconds
+const cacheDuration = 60 // seconds
 
 app.get('/', async (req, res) => {
   if (isFetching) {

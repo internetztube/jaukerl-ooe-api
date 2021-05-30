@@ -10,14 +10,22 @@ app.use(cors())
 let fetchedAt = null
 const timestamp = () => parseInt(new Date() / 1000)
 let data = null
+let isFetching = false
+const cacheDuration = 10 // seconds
 
 app.get('/', async (req, res) => {
-  if (!fetchedAt || fetchedAt + 60 < timestamp()) {
-    console.log('fetch new')
-    data = await service()
-    fetchedAt = timestamp()
+  if (isFetching) {
+    // return old data
+  } else if (!fetchedAt || fetchedAt + cacheDuration < timestamp()) {
+    isFetching = true
+    console.log('fetch new data')
+    try {
+      data = await service()
+      fetchedAt = timestamp()
+    } catch (e) {}
+    isFetching = false
   }
-  res.json({fetchedAt, data})
+  res.json({isFetching, fetchedAt, data})
 })
 
 app.listen(port, () => {

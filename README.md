@@ -21,4 +21,6 @@ node index.js
 
 ## Usage
 
-http://localhost:3000/data.json
+http://localhost:3000/
+
+Selecting birthday: http://localhost:3000/?birthdate=2001-01-01

@@ -7,25 +7,35 @@ const port = process.env.PORT || 3000
 
 app.use(cors())
 
-let fetchedAt = null
+let stateArray = []
 const timestamp = () => parseInt(new Date() / 1000)
-let data = null
-let isFetching = false
 const cacheDuration = 60 // seconds
 
 app.get('/', async (req, res) => {
-  if (isFetching) {
-    // return old data
-  } else if (!fetchedAt || fetchedAt + cacheDuration < timestamp()) {
-    isFetching = true
-    console.log('fetch new data')
-    try {
-      data = await service()
-      fetchedAt = timestamp()
-    } catch (e) {}
-    isFetching = false
+  let birthdate = req.query.birthdate || "1990-01-01"
+  let state = stateArray[birthdate]
+  if (state === undefined) {
+    state = {
+      isFetching: false,
+      fetchedAt: null,
+      data:  null
+    }
+    stateArray[birthdate] = state
   }
-  res.json({isFetching, fetchedAt, data})
+
+  if (state.isFetching) {
+    // return old data
+  } else if (!state.fetchedAt || state.fetchedAt + cacheDuration < timestamp()) {
+    state.isFetching = true
+    
+    console.log(`fetch new data for ${birthdate}`)
+    try {
+      state.data = await service(birthdate)
+      state.fetchedAt = timestamp()
+    } catch (e) {}
+    state.isFetching = false
+  }
+  res.json(state)
 })
 
 app.listen(port, () => {

@@ -1,12 +1,12 @@
 const fetch = require('node-fetch')
 
-const getAuthorities = async () => {
-  const request = await fetch('https://e-gov.ooe.gv.at/at.gv.ooe.cip/services/api/covid/authorities?adminUnitId=1&birthdate=1990-01-01')
+const getAuthorities = async (birthdate) => {
+  const request = await fetch(`https://e-gov.ooe.gv.at/at.gv.ooe.cip/services/api/covid/authorities?adminUnitId=1&birthdate=${birthdate}`)
   return await request.json()
 }
 
-const appointmentsByAuthority = async (authority) => {
-  const request = await fetch(`https://e-gov.ooe.gv.at/at.gv.ooe.cip/services/api/covid/slots?page=1&size=1000&orgUnitId=${authority.orgUnitId}&birthdate=1990-01-01`)
+const appointmentsByAuthority = async (authority, birthdate) => {
+  const request = await fetch(`https://e-gov.ooe.gv.at/at.gv.ooe.cip/services/api/covid/slots?page=1&size=1000&orgUnitId=${authority.orgUnitId}&birthdate=${birthdate}`)
   let appointments = await request.json()
   appointments = appointments.map(o => {
     o.authority = authority
@@ -16,12 +16,12 @@ const appointmentsByAuthority = async (authority) => {
   return appointments
 }
 
-const main = async () => {
-  const authorities = await getAuthorities()
+const main = async (birthdate) => {
+  const authorities = await getAuthorities(birthdate)
   let appointments = []
   for (let i = 0; i < authorities.length; i++) {
     const authority = authorities[i]
-    const result = await appointmentsByAuthority(authority)
+    const result = await appointmentsByAuthority(authority, birthdate)
     appointments = [].concat(appointments, result)
   }
   return {

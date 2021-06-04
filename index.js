@@ -29,12 +29,13 @@ app.get('/', async (req, res) => {
     // return old data
   } else if (!state.fetchedAt || state.fetchedAt + cacheDuration < timestamp()) {
     state.isFetching = true
-    
     console.log(`fetch new data for ${birthdate}`)
     try {
       state.data = await service(birthdate)
       state.fetchedAt = timestamp()
-    } catch (e) {}
+    } catch (e) {
+      console.log(e)
+    }
     state.isFetching = false
   }
   res.json(state)

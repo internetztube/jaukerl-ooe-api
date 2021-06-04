@@ -14,10 +14,12 @@ const cacheDuration = 60 // seconds
 app.get('/', async (req, res) => {
   let birthdate = req.query.birthdate || "1990-01-01"
   let state = stateArray[birthdate]
-  if (state === undefined) {
+
+  if (!state) {
     state = {
       isFetching: false,
       fetchedAt: null,
+      birthdate,
       data:  null
     }
     stateArray[birthdate] = state

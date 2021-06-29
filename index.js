@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000
 app.use(cors())
 
 app.get('/', proxyEndpoint);
-app.get('/expired-appointments/overview', overviewExpiredAppointmentsEndpoint)
+app.get('/expired-appointments/', overviewExpiredAppointmentsEndpoint)
 app.get('/expired-appointments/detail', detailExpiredAppointmentsEndpoint)
 
 

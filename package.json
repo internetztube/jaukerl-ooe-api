@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve":  "node index.js"
+    "serve": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dayjs": "^1.10.5",
     "express": "^4.17.1",
     "node-fetch": "^2.6.1"
   }

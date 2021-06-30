@@ -1,11 +1,14 @@
-const timestamp = () => parseInt(new Date() / 1000)
-const cacheDuration = 60 * 60 // 1h
+const dayjs = require('dayjs')
 const service = require('../services/expired-appointments/index')
+
+const timestamp = () => parseInt(new Date() / 1000)
+const cacheDuration = 60 // 1h
 let fetchedAt = 0;
 let currentData = null;
 let isFetching = false
 
 const cachedData = async () => {
+    console.log(dayjs.unix(fetchedAt).toISOString(),  cacheDuration, timestamp())
     if (isFetching) {
         // return old data
     } else if (!fetchedAt || fetchedAt + cacheDuration < timestamp()) {
@@ -15,19 +18,17 @@ const cachedData = async () => {
         isFetching = false
     }
     return currentData;
-
 }
 
 const overview = async (req, res) => {
-    // let birthdate = req.query.birthdate || "1990-01-01"
     const data = await cachedData()
     const result = {}
-    Object.keys(data).forEach((key) => {
-        result[key] = {
-            expiredSlots: data[key].expiredSlots,
-        }
-    })
-    res.json(result)
+    if (data) {
+        Object.keys(data).forEach((key) => {
+            result[key] = {expiredSlots: data[key].expiredSlots,}
+        })
+    }
+    res.json({fetchedAt: dayjs.unix(fetchedAt).toISOString(), isFetching, data: result})
 }
 
 const detail = async (req, res) => {

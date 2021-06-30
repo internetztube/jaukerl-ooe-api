@@ -6,7 +6,7 @@ This project is just the API. The Frontend can be found in this repository.
 
 
 ## Archive
-Since 15 June 2021, the response from the default API endpoint is archived every minute. The archive can be found here.  
+Since 2020-06-16, the response from the default API endpoint is archived every minute. The archive can be found here.  
 [internetztube/jaukerl-ooe-archive](https://github.com/internetztube/jaukerl-ooe-archive)
 
 

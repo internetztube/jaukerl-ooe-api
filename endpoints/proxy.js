@@ -1,6 +1,6 @@
 let stateArray = []
 const timestamp = () => parseInt(new Date() / 1000)
-const cacheDuration = 60 // seconds
+const cacheDuration = 30 // seconds
 const service = require('../services/proxy/index')
 
 const endpoint = async (req, res) => {

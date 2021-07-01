@@ -8,13 +8,16 @@ let currentData = null;
 let isFetching = false
 
 const cachedData = async () => {
-    console.log(dayjs.unix(fetchedAt).toISOString(),  cacheDuration, timestamp())
     if (isFetching) {
         // return old data
     } else if (!fetchedAt || fetchedAt + cacheDuration < timestamp()) {
         isFetching = true
-        currentData = await service()
-        fetchedAt = timestamp()
+        try {
+            currentData = await service()
+            fetchedAt = timestamp()
+        } catch (e) {
+            console.log(e)
+        }
         isFetching = false
     }
     return currentData;
@@ -33,7 +36,6 @@ const overview = async (req, res) => {
 
 const detail = async (req, res) => {
     const date = req.query.date
-    console.log(date)
     const data = await cachedData()
     if (!data[date]) {
         return res.json({message: 'not found', success: false})

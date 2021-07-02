@@ -40,12 +40,16 @@ const detail = async (req, res) => {
     if (!data[date]) {
         return res.json({message: 'not found', success: false})
     }
-    res.json({
+
+    const response = {
         message: 'found',
         success: true,
         date,
         data: data[date]
-    })
+    }
+
+    res.header("Content-Type",'application/json');
+    res.send(JSON.stringify(response, null, 2));
 }
 
 

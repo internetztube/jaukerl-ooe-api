@@ -30,7 +30,9 @@ const endpoint = async (req, res) => {
         }
         state.isFetching = false
     }
-    res.json(state)
+
+    res.header("Content-Type",'application/json');
+    res.send(JSON.stringify(state, null, 2));
 }
 
 module.exports = endpoint

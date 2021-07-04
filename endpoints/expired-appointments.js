@@ -12,12 +12,8 @@ const cachedData = async () => {
         // return old data
     } else if (!fetchedAt || fetchedAt + cacheDuration < timestamp()) {
         isFetching = true
-        try {
-            currentData = await service()
-            fetchedAt = timestamp()
-        } catch (e) {
-            console.log(e)
-        }
+        currentData = await service()
+        fetchedAt = timestamp()
         isFetching = false
     }
     return currentData;

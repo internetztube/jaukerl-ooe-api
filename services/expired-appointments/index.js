@@ -8,8 +8,8 @@ const main = async () => {
         const {url, folder} = urls[i]
         try {
             result[folder] = await (await fetch(url)).json()
+            result[folder].url = url
         } catch (e) {}
-        result[folder].url = url
     }
     return result;
 }

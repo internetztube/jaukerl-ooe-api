@@ -6,7 +6,9 @@ const main = async () => {
     const urls = getUrls()
     for (let i = 0; i < urls.length; i++) {
         const {url, folder} = urls[i]
-        result[folder] = await (await fetch(url)).json()
+        try {
+            result[folder] = await (await fetch(url)).json()
+        } catch (e) {}
         result[folder].url = url
     }
     return result;

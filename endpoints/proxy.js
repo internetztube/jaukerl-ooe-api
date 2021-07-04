@@ -3,7 +3,7 @@ const timestamp = () => parseInt(new Date() / 1000)
 const cacheDuration = 30 // seconds
 const service = require('../services/proxy/index')
 
-const endpoint = async (req, res) => {
+const main = async (req, res) => {
     let birthdate = req.query.birthdate || "1990-01-01"
     let state = stateArray[birthdate]
 
@@ -35,4 +35,14 @@ const endpoint = async (req, res) => {
     res.send(JSON.stringify(state, null, 2));
 }
 
-module.exports = endpoint
+const all = async (req, res) => {
+    let birthdate = req.query.birthdate || "1990-01-01"
+    const data = await service(birthdate, 100)
+    res.header("Content-Type",'application/json');
+    res.send(JSON.stringify(data, null, 2));
+}
+
+module.exports = {
+    main,
+    all,
+}

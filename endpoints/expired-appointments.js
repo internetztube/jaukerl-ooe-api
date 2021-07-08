@@ -19,12 +19,30 @@ const cachedData = async () => {
     return currentData;
 }
 
+const expiredSlotsByLocation = (appointments) => {
+    const result = {}
+    appointments.forEach((appointment) => {
+        const authorityId = appointment.authority.id
+        if (!result[authorityId]) {
+            result[authorityId] = {
+                expiredSlots: 0,
+                authority: appointment.authority
+            }
+        }
+        result[authorityId].expiredSlots += appointment.freeSlots
+    })
+    return result
+}
+
 const overview = async (req, res) => {
     const data = await cachedData()
     const result = {}
     if (data) {
         Object.keys(data).forEach((key) => {
-            result[key] = {expiredSlots: data[key].expiredSlots,}
+            result[key] = {
+                expiredSlots: data[key].expiredSlots,
+                byAuthority: expiredSlotsByLocation(data[key].appointments)
+            }
         })
     }
     res.json({fetchedAt: dayjs.unix(fetchedAt).toISOString(), isFetching, data: result})

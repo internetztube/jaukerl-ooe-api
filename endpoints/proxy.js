@@ -23,7 +23,7 @@ const main = async (req, res) => {
         state.isFetching = true
         console.log(`fetch new data for ${birthdate}`)
         try {
-            state.data = await service(birthdate)
+            state.data = await service(birthdate, 5)
             state.fetchedAt = timestamp()
         } catch (e) {
             console.log(e)
@@ -35,14 +35,4 @@ const main = async (req, res) => {
     res.send(JSON.stringify(state, null, 2));
 }
 
-const all = async (req, res) => {
-    let birthdate = req.query.birthdate || "1990-01-01"
-    const data = await service(birthdate, 100)
-    res.header("Content-Type",'application/json');
-    res.send(JSON.stringify(data, null, 2));
-}
-
-module.exports = {
-    main,
-    all,
-}
+module.exports = main

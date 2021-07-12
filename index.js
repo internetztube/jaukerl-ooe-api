@@ -1,9 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const {
-    main: proxyMainEndpoint,
-    all: proxyAllEndpoint
-} = require('./endpoints/proxy')
+const mainEndpoint = require('./endpoints/proxy')
 const {
     overview: overviewExpiredAppointmentsEndpoint,
     detail: detailExpiredAppointmentsEndpoint
@@ -14,10 +11,7 @@ const port = process.env.PORT || 3000
 
 app.use(cors())
 
-app.get('/', proxyMainEndpoint);
-if (process.env.ENABLE_ALL_ENDPOINT) {
-    app.get('/all', proxyAllEndpoint);
-}
+app.get('/', mainEndpoint);
 app.get('/expired-appointments/', overviewExpiredAppointmentsEndpoint)
 app.get('/expired-appointments/detail', detailExpiredAppointmentsEndpoint)
 

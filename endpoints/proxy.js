@@ -23,7 +23,7 @@ const main = async (req, res) => {
         state.isFetching = true
         console.log(`fetch new data for ${birthdate}`)
         try {
-            state.data = await service(birthdate, 1)
+            state.data = await service(birthdate, 3)
             state.fetchedAt = timestamp()
         } catch (e) {
             console.log(e)

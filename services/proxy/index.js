@@ -51,7 +51,9 @@ const main = async (birthdate, maxPages) => {
     const authority = authorities[i]
     promises.push(appointmentsByAuthority(authority, birthdate, categories, maxPages))
   }
-  const appointments = (await Promise.all(promises)).flat(1)
+  let appointments = {}
+  (await Promise.all(promises)).flat(1).forEach(a => { appointments[a.uid] = a })
+  appointments = Object.values(appointments)
   return {
     appointments,
     authorities,

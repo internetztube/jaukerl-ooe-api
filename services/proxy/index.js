@@ -1,13 +1,5 @@
 const fetch = require('node-fetch')
 
-Object.defineProperty(Array.prototype, 'flat', {
-  value: function(depth = 1) {
-    return this.reduce(function (flat, toFlatten) {
-      return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
-    }, []);
-  }
-});
-
 const getAuthorities = async (birthdate) => {
   const request = await fetch(`https://e-gov.ooe.gv.at/at.gv.ooe.cip/services/api/covid/authorities?adminUnitId=1&birthdate=${birthdate}`)
   return await request.json()
@@ -32,28 +24,24 @@ const getAppointmentsPage = async (authority, birthdate, categories, pageIndex) 
 
 const appointmentsByAuthority = async (authority, birthdate, categories, maxPages) => {
   maxPages = maxPages || 1
-  const promises = []
+  let result = []
   for (let i = 0; i < maxPages; i++) {
-    promises.push(getAppointmentsPage(authority, birthdate, categories, i))
+    const paged = await getAppointmentsPage(authority, birthdate, categories, i)
+    if (!paged.length) break;
+    result = [...result, ...paged]
   }
-  return (await Promise.all(promises)).flat(1).map(o => {
-    o.uid = `${o.startDate}__${o.authority.id}__${o.category.id}`
-    return o
-  })
+  return result
 }
 
 const main = async (birthdate, maxPages) => {
   const categories = await getCategories()
   const authorities = await getAuthorities(birthdate)
-
-  const promises = []
+  let appointments = []
   for (let i = 0; i < authorities.length; i++) {
     const authority = authorities[i]
-    promises.push(appointmentsByAuthority(authority, birthdate, categories, maxPages))
+    const result = await appointmentsByAuthority(authority, birthdate, categories, maxPages)
+    appointments = [].concat(appointments, result)
   }
-  let appointments = {}
-  (await Promise.all(promises)).flat(1).forEach(a => { appointments[a.uid] = a })
-  appointments = Object.values(appointments)
   return {
     appointments,
     authorities,

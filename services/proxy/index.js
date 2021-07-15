@@ -26,7 +26,7 @@ const getAppointmentsPage = async (authority, birthdate, categories, pageIndex) 
 const appointmentsByAuthority = async (authority, birthdate, categories, maxPages) => {
   maxPages = maxPages || 1
   let result = []
-  for (let i = 0; i < maxPages; i++) {
+  for (let i = 1; i <= maxPages; i++) {
     const paged = await getAppointmentsPage(authority, birthdate, categories, i)
     if (!paged.length) break;
     result = [...result, ...paged]

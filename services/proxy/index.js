@@ -18,6 +18,7 @@ const getAppointmentsPage = async (authority, birthdate, categories, pageIndex) 
     o.authority = authority
     o.category = categories.filter(c => c.id === o.categoryId)[0]
     o.startDateTimestamp = (new Date(o.startDate)).getTime()
+    o.uid = `${o.startDate}__${o.authority.id}__${o.category.id}`
     return o
   })
 }
@@ -42,6 +43,12 @@ const main = async (birthdate, maxPages) => {
     const result = await appointmentsByAuthority(authority, birthdate, categories, maxPages)
     appointments = [].concat(appointments, result)
   }
+
+
+  let appointmentsYo = {}
+  appointments.forEach(a => appointmentsYo[a.uid] = a)
+  appointments = Object.values(appointmentsYo)
+
   return {
     appointments,
     authorities,

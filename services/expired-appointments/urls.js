@@ -17,7 +17,7 @@ const getDates = function (startDate, endDate) {
 };
 
 const urls = () => {
-    const result = getDates(new Date(2021, 6 - 1, 16), new Date(2021, 8 - 1, 26))
+    const result = getDates(new Date(2021, 6 - 1, 16), new Date())
         .map((date) => {
             const folder = dayjs(date).format('YYYY/MM/DD');
             date = dayjs(date).format('YYYY-MM-DD');

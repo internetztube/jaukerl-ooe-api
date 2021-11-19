@@ -2,7 +2,7 @@ const dayjs = require('dayjs')
 const service = require('../services/expired-appointments/index')
 
 const timestamp = () => parseInt(new Date() / 1000)
-const cacheDuration = 60 * 60; // 1h
+const cacheDuration = 60 * 60 * 6; // 6h
 let fetchedAt = 0;
 let currentData = null;
 let isFetching = false
